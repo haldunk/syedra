@@ -1,0 +1,62 @@
+#+TITLE: Syedra: A Systems Design Framework
+#+AUTHOR: Haldun Komsuoglu
+
+*syedra* framework is a tool kit to implement control and
+data processing systems. It is named after the ancient city
+of [[https://syedra.org][Syedra]] located in Alanya, Turkey whose city plan of
+concentric circles climbing up a hill top resembles a
+heirachy of abstraction layers.
+
+* Modules
+
+** core
+*** Block
+*** FSM
+
+* Developer
+
+** Source Conventions
+
+- [[https://peps.python.org/pep-0008/][Python style guide]] is the foundation of coding
+  conventions. Unless otherwise explicitly stated it should
+  be followed.
+- The python source uses tab indentation of 2 spaces.
+- All source must use [[https://docs.python.org/3/library/typing.html][type hints]].
+- Inline comments must be kept at a minimum. Code itself
+  must be legible and ideally require no inline comments.
+
+** Virtual Environment
+
+Development of the package is performed in a virtual
+environment. For convenience the following make target is
+provided to setup the required virtual environment.
+
+#+BEGIN_SRC
+make venv
+#+END_SRC
+
+To switch to the virtual environment simply source the
+activate script.
+
+#+BEGIN_SRC
+source venv/bin/activate
+#+END_SRC
+
+* Branches
+
+** main
+This branch is where the stable implementation of the
+repository is maintained.
+
+** experimental
+This branch, extended from the [[#main][main]] branch, is where new
+concepts are tested.
+
+* Tags
+
+A three digit versioning system is employed:
+- MAJOR: incremented when backward compatibility is lost
+- MINOR: incremeneted when database schema is changed
+- BUILD: incremented when all other changes made
+  
+** 0.0.0
