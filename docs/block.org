@@ -28,13 +28,13 @@ from syedra.core.block import *
 #+END_SRC
 
 * Block Definition
-
 ** Process Wrapper
 
 Customized Block class definitions are farily flexible. In
 its most basic form a Block can be setup as a wrapper for a
 process. Overriding the =update()= method the process for
-the custom Block can be defined (See [[../tutorials/block/wrapper.py][wrapper.py]]).
+the custom Block can be defined (See
+[[../tutorials/block/wrapper.py][tutorials/block/wrapper.py]]).
 
 #+BEGIN_SRC python
 class Process(Block):
@@ -123,7 +123,7 @@ is needed the user needs to derive a child class.
 
 A Block class can be setup to produce one or more
 /output(s)/. Each output is exposed to the outside world
-through an [[file:../syedra/core/block.py::class OutputPort(][OutputPort]]. (See [[file:~/Projects/python/syedra/tutorials/block/source.py][tutorials/block/source.py]])
+through an [[file:../syedra/core/block.py::class OutputPort(][OutputPort]]. (See [[file:../tutorials/block/source.py][tutorials/block/source.py]])
 
 #+BEGIN_SRC python
 class Source(Block):
@@ -139,7 +139,7 @@ class Source(Block):
 
 A Block class can be setup to accept one or more
 /input(s)/.  Each input port are exposed to the outside
-world though an [[file:../syedra/code/block.py::class InputPort(][InputPort]]. (See [[file:~/Projects/python/syedra/tutorials/block/sink.py][tutorials/block/source.py]])
+world though an [[file:../syedra/code/block.py::class InputPort(][InputPort]]. (See [[file:../tutorials/block/sink.py][tutorials/block/source.py]])
 
 **** ProxyPort
 
@@ -154,7 +154,7 @@ instance is accessed using the item getter (=[]=) on the
 owner block instance.
 
 * Execution of Blocks
-
+** Block Readiness
 Execution of a (network of) Block is initiated by the
 =Block.execute()= static method which takes a list of Block
 instances as the starting blocks for execution.
