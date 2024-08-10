@@ -146,7 +146,6 @@ source venv/bin/activate
 #+END_SRC
 
 * Branches
-
 ** main
 This branch is where the stable implementation of the
 repository is maintained.

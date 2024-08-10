@@ -139,9 +139,75 @@ class Source(Block):
 
 A Block class can be setup to accept one or more
 /input(s)/.  Each input port are exposed to the outside
-world though an [[file:../syedra/code/block.py::class InputPort(][InputPort]]. (See [[file:../tutorials/block/sink.py][tutorials/block/source.py]])
+world though an [[file:../syedra/code/block.py::class InputPort(][InputPort]]. (See
+[[file:../tutorials/block/sink.py][tutorials/block/source.py]])
+
+#+BEGIN_SRC python
+class Sink(Block):
+  block_name = 'Sink'
+
+  x = InputPort(initial=0)
+
+  def update(self):
+    print(f"- x = {self.x}")
+#+END_SRC
+
+Note that in a typical setup you *cannot* use the standard
+dot notation to set the value of an InputPort
+instance. However, in cases where you have to set the
+InputPort value on a block the following approach can be
+used. But the user must note that the value of the
+associated Node is being overwritten. This method must be
+used sparingly.
+
+#+BEGIN_SRC python
+sink['x'].value = 1
+Block.execute(sink)
+#+END_SRC
 
 **** ProxyPort
+
+A Block class can be setup as a container for a Block
+Pipeline Subsystem. In such a setting the exposing the
+subsystem ports to the outside world as an interface of the
+superblock is accomplished by the [[file:../syedra/core/block.py::class ProxyPort(][ProxyPort]]. As the name
+implies a ProxyPort is simply a pass-thru for the subsystem
+port that is being exposed. Technically, it has the same
+properties of an [[InputPort]] but it is not considered in the
+block execution scheduling mechanism. (See
+[[file:../tutorials/block/subsystem.py][tutorials/block/subsystem.py]])
+
+#+BEGIN_SRC python
+class Generator(Block):
+  block_name = 'Generator'
+
+  y = OutputPort()
+  
+  def update(self):
+    self.y = random.randint(0, 10)
+
+
+class Printer(Block):
+  block_name = 'Printer'
+
+  x = InputPort()
+
+  def update(self):
+    print(f"x = {self.x}")
+
+
+class Container(Block):
+  block_name = 'Container'
+
+  y = ProxyPort()
+
+  def __init__(self):
+    super().__init__()
+    self.generator = Generator(superblock=self)
+    self.printer = Printer()
+    self.generator['y'] >> self.printer['x']
+    self.generator['y'] >> self['y']
+#+END_SRC
 
 * Block Pipeline
 

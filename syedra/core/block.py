@@ -11,6 +11,7 @@ __all__ = [
   'Port',
   'InputPort',
   'OutputPort',
+  'ProxyPort',
 ]
 
 
@@ -135,7 +136,7 @@ class Block(metaclass=BlockMeta):
 
   block_name = None
   
-  def __init__(self, name:str=None, superblock=None):
+  def __init__(self, name:str=None, superblock:Block=None):
     self.__name = name or self.block_name
     assert self.__name, \
       'A non emptry string name must be assigned'
@@ -143,7 +144,14 @@ class Block(metaclass=BlockMeta):
     self.__init_latches()
     self._token = False
     Block.__collection.add(self)
+    self.__execution_cohord = [self]
+    if superblock:
+      superblock.__execution_cohord.append(self)
 
+  @property
+  def execution_cohord(self):
+    return self.__execution_cohord
+      
   def __init_latches(self):
     self._latches = {
       name: Latch(block=self, port=port)
@@ -233,17 +241,22 @@ class Block(metaclass=BlockMeta):
       
   @staticmethod
   def execute(*start:List[Block]):
-    assert start, 'At least one block must be specified as start block'
+    assert start, \
+      'At least one block must be specified as start block'
     assert all([isinstance(b, Block) for b in start]), \
       'Input must be a list of Block instances'
-    blocks = start
+    blocks = reduce(
+      lambda a,b: a+b, [b.execution_cohord for b in start], [])
     try:
       while blocks:
         Block.clear_input_latch_tokens(*blocks)
         for block in blocks:
           block.update()
         Block.set_output_latch_tokens(*blocks)
-        blocks = Block.get_execution_ready_blocks()
+        ready_blocks = Block.get_execution_ready_blocks()
+        blocks = reduce(
+          lambda a,b: a+b,
+          [b.execution_cohord for b in ready_blocks], [])
     except Block.Terminated:
       pass
     finally:

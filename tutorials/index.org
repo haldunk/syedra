@@ -21,9 +21,10 @@ python -m tutorials.block.wrapper
 #+END_SRC
 
 * Block
-- [[file:block/wrapper.py][wrapper.py]]
-- [[file:block/source.py][source.py]]
-- [[file:block/sink.py][sink.py]]
-- [[file:block/function.py][function.py]]
-- [[file:block/subsystem.py][subsystem.py]]
+- [[file:block/wrapper.py][wrapper.py]] : basic Block definition as a process wrapper
+- [[file:block/source.py][source.py]] : Block definition with output port
+- [[file:block/sink.py][sink.py]] : Block definition with input port
+- [[file:block/function.py][function.py]] : Block implementing a function between an input and an output
+- [[file:block/periodic.py][periodic.py]] : Block pipeline with feedback producing self excitement
+- [[file:block/subsystem.py][subsystem.py]] : Block containing a sub-system of blocks
   
