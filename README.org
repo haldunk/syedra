@@ -11,25 +11,38 @@ See [[file:docs/index.org][Documentation]] for more details on the code use.
 
 * Installation
 
-The package can be installed from pypi by running the following
-command:
+This project is partitioned into sub-packages to facilitate
+minimal dependency in downstream projects. Each sub-package
+corresponds to a distinct (but inter-dependent) python
+package. Created packages are:
+
+- syedra-core
+- syedra-vision
+- syedra-control
+
+These packages can be installed from pypi by running the
+following command:
 
 #+BEGIN_SRC sh
-pip install syedra
+pip install syedra-core [syedra-vision syedra-control]
 #+END_SRC
 
 Alternatively, you can install directly from the github repository
 using the following command:
 
 #+BEGIN_SRC sh
-pip install git+https://github.com/haldunk/syedra
+pip install git+https://github.com/haldunk/syedra.git#subdirectory=syedra-core
+pip install git+https://github.com/haldunk/syedra.git#subdirectory=syedra-vision
+pip install git+https://github.com/haldunk/syedra.git#subdirectory=syedra-control
 #+END_SRC
 
 To install a specific tagged version or a branch use the following
 syntax:
 
 #+BEGIN_SRC sh
-pip install git+https://github.com/haldunk/syedra@<tag|branch>
+pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-core
+pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-vision
+pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-control
 #+END_SRC
 
 * Quick Start
@@ -137,7 +150,19 @@ For a detailed documentation see [[file:docs/index.org][docs folder]]. For
 illustrative examples of various ways to use the
 architecture see [[file:tutorials/index.org][tutorials folder]].
 
+* Documentation
+
+the documentation organization mirrors that of the [[Packages][sub
+packages]]. More detailed information on each collection
+can be found in the associated documentation file linked
+below.
+
+- [[file:syedra-core/docs/index.org][core]] : fundamental building blocks of the framework
+- [[file:syedra-control/docs/index.org][control]] : control system implementation components
+- [[file:syedra-vision/docs/index.org][vision]] : vision procession implementation components
+
 * Packages
+
 - [[file:docs/core.org][core]]
 - [[file:docs/vision.org][vision]]
 - [[file:docs/control.org][control]]
@@ -150,6 +175,7 @@ The project folder consists of the following subfolders:
 - [[file:tutorials/][tutorials/]] : tutorials on how to use the package
 - [[file:docs/][docs/]] : package documentation
 - [[file:tests/][tests/]] : unit tests for the package
+  
 * Developer
 ** Source Conventions
 
@@ -163,9 +189,11 @@ The project folder consists of the following subfolders:
 
 ** Virtual Environment
 
-Development of the package is performed in a virtual
-environment. For convenience the following make target is
-provided to setup the required virtual environment.
+Development of the sub-packages is performed in a suitable
+virtual environment setting. Each sub-package has a
+tailored virtual environment. For convenience the following
+make target is provided in each sub-package to setup the
+required virtual environment.
 
 #+BEGIN_SRC
 make venv
@@ -177,6 +205,22 @@ activate script.
 #+BEGIN_SRC
 source venv/bin/activate
 #+END_SRC
+
+** Running Tutorial Scripts
+
+Since the project is partitioned into sub-packages that has
+dependency among themselves the execution of the tutorial
+scripts require the setting up the PYTHONPATH propertly.
+
+A convenience script is provided at the top folder. After
+entering into the virtual environment sourcing this file
+will setup python so that all sub-packages can be accessed
+by tutorial scripts.
+
+#+BEGIN_SRC
+source path.sh
+#+END_SRC
+
 
 * Branches
 ** main
