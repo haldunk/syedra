@@ -1,9 +1,9 @@
 #+TITLE: syedra/core Collection Documentation
 #+AUTHOR: Haldun Komsuoglu
 
-*core* collection maintains the fundamental building
+The *core* collection maintains the fundamental building
 primitives of the syedra architecture. Each primitive is
 captured by a member module which are listed below.
 
-- [[file:block.org][block]]
-- [[file:fsm.org][fsm]]
+- [[file:block.org][block]] : process pipeline construction architecture
+- [[file:fsm.org][fsm]] : finite state machine construction architecture

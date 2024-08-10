@@ -1,0 +1,5 @@
+#+TITLE: syedra System Control Components
+#+AUTHOR: Haldun Komsuoglu
+
+
+- [[file:../syedra/control/pid.py][pid]] : proportional-integral-differential controller 

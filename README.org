@@ -137,10 +137,10 @@ For a detailed documentation see [[file:docs/index.org][docs folder]]. For
 illustrative examples of various ways to use the
 architecture see [[file:tutorials/index.org][tutorials folder]].
 
-* Modules
+* Packages
 - [[file:docs/core.org][core]]
-  - [[file:docs/block.org][block]]
-  - [[file:docs/fsm.org][fsm]]
+- [[file:docs/vision.org][vision]]
+- [[file:docs/control.org][control]]
 
 * Folders
 
