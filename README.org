@@ -7,7 +7,7 @@ of [[https://syedra.org][Syedra]] located in Alanya, Turkey whose city plan of
 concentric circles climbing up a hill top resembles a
 heirachy of abstraction layers.
 
-See [[file:docs/index.org][Documentation]] for more details on the code use.
+See [[Documentation][Documentation]] for more details on the code use.
 
 * Installation
 
@@ -150,6 +150,25 @@ For a detailed documentation see [[file:docs/index.org][docs folder]]. For
 illustrative examples of various ways to use the
 architecture see [[file:tutorials/index.org][tutorials folder]].
 
+* Running Examples
+
+To run the tutorial scripts in this repository you need to
+enter into the virtual environment and setup the python
+path.
+
+#+BEGIN_SRC sh
+source venv/bin/activate
+source path.sh
+#+END_SRC
+
+Then, any tutorial in the sub-package folders can be
+executed.
+
+#+BEGIN_SRC sh
+cd syedra-core
+python -m tutorial.block.process
+#+END_SRC
+
 * Documentation
 
 the documentation organization mirrors that of the [[Packages][sub
@@ -220,7 +239,6 @@ by tutorial scripts.
 #+BEGIN_SRC
 source path.sh
 #+END_SRC
-
 
 * Branches
 ** main
