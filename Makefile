@@ -35,9 +35,12 @@ venv :
 
 clear :
 	@echo "Delete any compiled package"
-	@rm -fr *.egg-info
-	@rm -fr dist
+	@make clear -C syedra-core
+	@make clear -C syedra-vision
+	@make clear -C syedra-control
 
 build : clear
 	@echo "Build python package"
-	@source venv/bin/activate && python -m build
+	@make build -C syedra-core
+	@make build -C syedra-vision
+	@make build -C syedra-control
