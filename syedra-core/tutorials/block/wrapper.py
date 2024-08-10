@@ -6,7 +6,7 @@ class Process(Block):
   block_name = 'Process'
 
   def update(self):
-    print("Process: update()")    
+    print("Process: update()")
 
 
 if __name__ == '__main__':
