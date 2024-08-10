@@ -1,0 +1,2 @@
+#+TITLE: syedra Finite State Machine Primitive Documentation
+#+AUTHOR: Haldun Komsuoglu
