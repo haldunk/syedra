@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src/"]
+include = ["syedra.vision"]
+
+[project]
+name = "syedra-vision"
+version = "0.0.0"
+description = "Syedra architecture based vision components"
+keywords = ['vision', 'processing pipeline']
+requires-python = ">=3.10"
+dependencies = [
+  "syedra-core",
+  "cv2",
+]
+
+[project.urls]
+Repository = "https://github.com/haldunk/syedra.git"
