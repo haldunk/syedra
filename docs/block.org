@@ -1,0 +1,97 @@
+#+TITLE: syedra Block Primitive Documentation
+#+AUTHOR: Haldun Komsuoglu
+
+*Block* is a process container primitive with a well specified
+input/output interface for data flow. To import Block and associated
+classes use the following import.
+
+* Importing
+
+The primitive [[file:~/Projects/python/syedra/syedra/core/block.py::class Block(][Block]] class can be imported as follows. 
+
+#+BEGIN_SRC python
+from syedra.core.block import Block
+#+END_SRC
+
+Generally, one would require the I/O functionality in
+custom Block classes for which the port classes needed.
+
+#+BEGIN_SRC python
+from syedra.core.block import InputPort, OutputPort
+#+END_SRC
+
+Alternatively, all typically needed classes can be imported
+using the public names.
+
+#+BEGIN_SRC python
+from syedra.core.block import *
+#+END_SRC
+
+
+* Block Definition
+
+Customized Block class definitions are farily flexible. In
+its most basic form a Block can be setup as a wrapper for a
+process. Overriding the =update()= method the process for
+the custom Block can be defined.
+
+#+BEGIN_SRC python
+class Process(Block):
+  block_name = 'Process'
+  
+  def update(self):
+    print("Process: update()")
+#+END_SRC
+
+* Execution of Blocks
+
+Execution of a (network of) Block is initiated by the
+=Block.execute()= static method which takes a list of Block
+instances as the starting blocks for execution.
+
+The execution may be started from a single Block instance.
+
+    process = Process()
+    Block.execute(process)
+
+Or, multiple Block instances.
+
+    process1 = Process()
+    process2 = Process()
+    Block.execute(process1, process2)
+
+However, the real value of the Block architecture arises from its
+ability to describe complex processing pipelines. Intra-Block
+connection definitions require Ports. There are two fundamental Port
+types: InputPort and OutputPort. The names imply the enforced
+direction of the data flow from the Block's perspective.
+
+One can define a Block that only has OutputPorts. These are *source*
+blocks.
+
+    class Source(Block):
+      block_name = 'Source'
+
+      y = OutputPort(initial=0)
+
+      def update(self):
+        self.y = random.randint(0, 10)
+  
+Similarly, a Block may have only InputPorts. These are *sink* blocks.
+
+    class Sink(Block):
+      block_name = 'Sink'
+
+      x = InputPort(initial=0)
+
+      def update(self):
+        print(f"- x = {self.x}")
+
+The Block execution is scheduled based on a *token passing
+mechanism*. When a block is executed a token is passed to the
+InputPort(s) that are connected to the OutputPort of the executed
+Block. If all InputPort(s) of a Block instance has a token this Block
+instance is marked as *ready to execute* and executed in the next
+execution cycle. When there is no Block instance ready for execution
+the execution concludes.
+  

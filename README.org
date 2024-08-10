@@ -1,0 +1,42 @@
+#+TITLE: Syedra: A Systems Design Framework
+#+AUTHOR: Haldun Komsuoglu
+
+**syedra** framework is a tool kit to implement control and data
+processing systems. It is named after the ancient city of
+[Syedra](https://syedra.org) located in Alanya, Turkey whose city
+plan of concentric circles climbing up a hill top resembles a
+heirachy of abstraction layers.
+
+See [[file:docs/index.org][Documentation]] for more details on the code use.
+
+* Installation
+
+The package can be installed from pypi by running the following
+command:
+
+#+BEGIN_SRC sh
+pip install syedra
+#+END_SRC
+
+Alternatively, you can install directly from the github repository
+using the following command:
+
+#+BEGIN_SRC sh
+pip install git+https://github.com/haldunk/syedra
+#+END_SRC
+
+To install a specific tagged version or a branch use the following
+syntax:
+
+#+BEGIN_SRC sh
+pip install git+https://github.com/haldunk/syedra@<tag|branch>
+#+END_SRC
+
+* Folders
+
+The project folder consists of the following subfolders:
+
+- [[file:syedra/][syedra/]] : syedra package sources
+- [[file:tutorials/][tutorials/]] : tutorials on how to use the package
+- [[file:docs/][docs/]] : package documentation
+- [[file:tests/][tests/]] : unit tests for the package

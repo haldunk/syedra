@@ -1,0 +1,21 @@
+#+TITLE: Tutorials on syedra Package
+#+AUTHOR: Haldun Komsuoglu
+
+
+Tutorials folder contains a collection of scripts demonstrating the
+use of the package. Each script is a stand alone executable.
+
+The scripts should be executed from the top project folder and from
+within the development virtual environment and/or a setup where the
+syedra package is installed.
+
+#+BEGIN_SRC sh
+source venv/bin/activate
+#+END_SRC
+
+For instance, the ``tutorial/block/basic.py`` example can be executed
+as follows:
+
+#+BEGIN_SRC sh
+python -m tutorials.block.basic
+#+END_SRC
