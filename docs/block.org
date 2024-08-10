@@ -27,13 +27,14 @@ using the public names.
 from syedra.core.block import *
 #+END_SRC
 
-
 * Block Definition
+
+** Process Wrapper
 
 Customized Block class definitions are farily flexible. In
 its most basic form a Block can be setup as a wrapper for a
 process. Overriding the =update()= method the process for
-the custom Block can be defined.
+the custom Block can be defined (See [[../tutorials/block/wrapper.py][wrapper.py]]).
 
 #+BEGIN_SRC python
 class Process(Block):
@@ -42,6 +43,115 @@ class Process(Block):
   def update(self):
     print("Process: update()")
 #+END_SRC
+
+** Block I/O
+
+[[file:../syedra/core/block.py::class Port(][Port]] class defines the standardized abstraction to
+implement input/output interface for Block classes. 
+
+*** Port Use
+
+There are three access methods related to block ports.
+
+**** Value Access
+
+To read and write the value of a given port instance the
+*dot-notation* is used. While port value read can be done
+for all ports, write is only allowed for [[OutputPort]]. The
+block ports are accessible from anywhere both from within
+the block itself (such as the =update()= method) as well as
+outside.
+
+#+BEGIN_SRC python
+class Process(Block):
+  x = InputPort()
+  y = OutputPort()
+
+process = Process()
+
+print(f"x = {process.x}")
+
+process.y = 1
+print(f"y = {process.y}")
+#+END_SRC
+
+**** Port Binding
+
+Binding two ports is achived using the item getter function
+on the parent block (=[]=) and the right-shift (=>>=)
+operator. Please, refer to the [[Block Pipeline]] for a
+detailed discussion on the underlying mechanism.
+
+#+BEGIN_SRC python
+generator['y'] >> printer['x']
+#+END_SRC
+
+**** Port Detachment
+
+When a block port instance needs to be *detached* from its
+existing connections the call notation on the parent block
+(=()=) is used to get the associated [[file:../syedra/code/block.py::class Latch(][Latch]] on which the
+=detach()= method is called. Please, refer to the [[Block
+Pipeline]] for a detailed discussion on the underlying
+mechanism.
+
+#+BEGIN_SRC python
+printer('x').detach()
+#+END_SRC
+
+*** Port Types
+
+[[file:../syedra/core/block.py::class Port(][Port]] is an I/O abstraction for defining connections between
+Blocks to form a [[Block Pipeline][Block Pipeline]].
+
+The base class [[file:../syedra/core/block.py::class Port(][Port]] is not meant to be used directly in
+applications as it does not enforce data flow
+direction.
+
+Instead, there are three basic port classes provided for
+application use. Note that these classes provide bare
+minimum port abstraction functionality essentially defining
+the direction of flow of information but does not provide
+any type checking or other services. If such functionality
+is needed the user needs to derive a child class.
+
+- [[OutputPort]] : exposes an output from the Block
+- [[InputPort]] : exposes an input to the Block
+- [[ProxyPort]] : serves as a pass-thru in a layered Blocks 
+
+**** OutputPort
+
+A Block class can be setup to produce one or more
+/output(s)/. Each output is exposed to the outside world
+through an [[file:../syedra/core/block.py::class OutputPort(][OutputPort]]. (See [[file:~/Projects/python/syedra/tutorials/block/source.py][tutorials/block/source.py]])
+
+#+BEGIN_SRC python
+class Source(Block):
+  block_name = 'Source'
+
+  y = OutputPort(initial=0)
+  
+  def update(self):
+    y = random.randint(0, 10)
+#+END_SRC
+
+**** InputPort
+
+A Block class can be setup to accept one or more
+/input(s)/.  Each input port are exposed to the outside
+world though an [[file:../syedra/code/block.py::class InputPort(][InputPort]]. (See [[file:~/Projects/python/syedra/tutorials/block/sink.py][tutorials/block/source.py]])
+
+**** ProxyPort
+
+* Block Pipeline
+
+**** Connectivity
+
+By definition, each block port instance is associated with
+a [[file:../syedra/core/block.py::class Node(][Node]] instance, which serves as the node of the
+informational graph. The node associated with a port
+instance is accessed using the item getter (=[]=) on the
+owner block instance.
 
 * Execution of Blocks
 

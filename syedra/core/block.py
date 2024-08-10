@@ -293,8 +293,11 @@ class Latch:
         lambda l: l.is_input, self._node._latches)
       for latch in connected_input_latches:
         latch.token = state
-  
-  
+        
+  def detach(self):
+    return self._node != self
+
+        
 class Node:
   '''Node object is the value storage entity for a set of
   _connected_ Latch instances(s). Nodees can also be
