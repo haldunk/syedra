@@ -1,5 +1,5 @@
-#+TITLE: syedra: A System Design Framework
-#+AUTHOR: Haldun Komsuoglu
+#+title: syedra: A System Design Framework
+#+author: Haldun Komsuoglu
 
 *syedra* framework is a tool kit to implement control and
 data processing systems. It is named after the ancient city
@@ -177,7 +177,19 @@ For a detailed documentation see [[file:docs/index.org][docs folder]]. For
 illustrative examples of various ways to use the
 architecture see [[file:tutorials/index.org][tutorials folder]].
 
-* Examples
+* Sub Packages
+
+The syedra package is organized into a collection of
+subpackages to facilitate fine grained control over the
+dependencies and to reduce code base.  More detailed
+information on each subpackage can be found in the
+associated documentation file linked below.
+
+- [[file:syedra-core/index.org][core]]    : fundamental building blocks of the framework
+- [[file:syedra-vision/index.org][vision]]  : vision procession implementation components
+- [[file:syedra-control/index.org][control]] : control system implementation components
+  
+* Tutorials
 
 To run the tutorial scripts in this repository you need to
 enter into the virtual environment and setup the python
@@ -193,35 +205,9 @@ executed.
 
 #+begin_src sh
 cd syedra-core
-python -m tutorial.block.process
+python -m tutorials.block.process
 #+end_src
 
-* Documentation
-
-the documentation organization mirrors that of the [[Packages][sub
-packages]]. More detailed information on each collection
-can be found in the associated documentation file linked
-below.
-
-- [[file:syedra-core/docs/index.org][core]] : fundamental building blocks of the framework
-- [[file:syedra-control/docs/index.org][control]] : control system implementation components
-- [[file:syedra-vision/docs/index.org][vision]] : vision procession implementation components
-
-* Packages
-
-- [[file:docs/core.org][core]]
-- [[file:docs/vision.org][vision]]
-- [[file:docs/control.org][control]]
-
-* Folders
-
-The project folder consists of the following subfolders:
-
-- [[file:syedra/][syedra/]] : syedra package sources
-- [[file:tutorials/][tutorials/]] : tutorials on how to use the package
-- [[file:docs/][docs/]] : package documentation
-- [[file:tests/][tests/]] : unit tests for the package
-  
 * Developer
 ** Source Conventions
 
@@ -232,38 +218,4 @@ The project folder consists of the following subfolders:
 - All source must use [[https://docs.python.org/3/library/typing.html][type hints]].
 - Inline comments must be kept at a minimum. Code itself
   must be legible and ideally require no inline comments.
-
-** Virtual Environment
-
-Development of the sub-packages is performed in a suitable
-virtual environment setting. Each sub-package has a
-tailored virtual environment. For convenience the following
-make target is provided in each sub-package to setup the
-required virtual environment.
-
-#+begin_src
-make venv
-#+end_src
-
-To switch to the virtual environment simply source the
-activate script.
-
-#+begin_src
-source venv/bin/activate
-#+end_src
-
-** Running Tutorial Scripts
-
-Since the project is partitioned into sub-packages that has
-dependency among themselves the execution of the tutorial
-scripts require the setting up the PYTHONPATH propertly.
-
-A convenience script is provided at the top folder. After
-entering into the virtual environment sourcing this file
-will setup python so that all sub-packages can be accessed
-by tutorial scripts.
-
-#+begin_src
-source path.sh
-#+end_src
 

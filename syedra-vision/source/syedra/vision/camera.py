@@ -1,6 +1,6 @@
 from __future__ import annotations
 import cv2
-from system.block import Block, OutputPort
+from syedra.core.block import Block, OutputPort
 
 
 __all__ = [

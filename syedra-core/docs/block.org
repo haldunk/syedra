@@ -1,5 +1,5 @@
-#+TITLE: syedra Block Primitive Documentation
-#+AUTHOR: Haldun Komsuoglu
+#+title: syedra Block Primitive Documentation
+#+author: Haldun Komsuoglu
 
 *Block* is a process container primitive with a well specified
 input/output interface for data flow. To import Block and associated
@@ -9,23 +9,23 @@ classes use the following import.
 
 The primitive [[file:~/Projects/python/syedra/syedra/core/block.py::class Block(][Block]] class can be imported as follows. 
 
-#+BEGIN_SRC python
+#+begin_src python
 from syedra.core.block import Block
-#+END_SRC
+#+end_src
 
 Generally, one would require the I/O functionality in
 custom Block classes for which the port classes needed.
 
-#+BEGIN_SRC python
+#+begin_src python
 from syedra.core.block import InputPort, OutputPort
-#+END_SRC
+#+end_src
 
 Alternatively, all typically needed classes can be imported
 using the public names.
 
-#+BEGIN_SRC python
+#+begin_src python
 from syedra.core.block import *
-#+END_SRC
+#+end_src
 
 * Block Definition
 ** Process Wrapper
@@ -36,13 +36,13 @@ process. Overriding the =update()= method the process for
 the custom Block can be defined (See
 [[../tutorials/block/wrapper.py][tutorials/block/wrapper.py]]).
 
-#+BEGIN_SRC python
+#+begin_src python
 class Process(Block):
   block_name = 'Process'
   
   def update(self):
     print("Process: update()")
-#+END_SRC
+#+end_src
 
 ** Block I/O
 
@@ -62,7 +62,7 @@ block ports are accessible from anywhere both from within
 the block itself (such as the =update()= method) as well as
 outside.
 
-#+BEGIN_SRC python
+#+begin_src python
 class Process(Block):
   x = InputPort()
   y = OutputPort()
@@ -73,7 +73,7 @@ print(f"x = {process.x}")
 
 process.y = 1
 print(f"y = {process.y}")
-#+END_SRC
+#+end_src
 
 **** Port Binding
 
@@ -82,9 +82,9 @@ on the parent block (=[]=) and the right-shift (=>>=)
 operator. Please, refer to the [[Block Pipeline]] for a
 detailed discussion on the underlying mechanism.
 
-#+BEGIN_SRC python
+#+begin_src python
 generator['y'] >> printer['x']
-#+END_SRC
+#+end_src
 
 **** Port Detachment
 
@@ -95,9 +95,9 @@ existing connections the call notation on the parent block
 Pipeline]] for a detailed discussion on the underlying
 mechanism.
 
-#+BEGIN_SRC python
+#+begin_src python
 printer('x').detach()
-#+END_SRC
+#+end_src
 
 *** Port Types
 
@@ -125,7 +125,7 @@ A Block class can be setup to produce one or more
 /output(s)/. Each output is exposed to the outside world
 through an [[file:../syedra/core/block.py::class OutputPort(][OutputPort]]. (See [[file:../tutorials/block/source.py][tutorials/block/source.py]])
 
-#+BEGIN_SRC python
+#+begin_src python
 class Source(Block):
   block_name = 'Source'
 
@@ -133,7 +133,7 @@ class Source(Block):
   
   def update(self):
     y = random.randint(0, 10)
-#+END_SRC
+#+end_src
 
 **** InputPort
 
@@ -142,7 +142,7 @@ A Block class can be setup to accept one or more
 world though an [[file:../syedra/code/block.py::class InputPort(][InputPort]]. (See
 [[file:../tutorials/block/sink.py][tutorials/block/source.py]])
 
-#+BEGIN_SRC python
+#+begin_src python
 class Sink(Block):
   block_name = 'Sink'
 
@@ -150,7 +150,7 @@ class Sink(Block):
 
   def update(self):
     print(f"- x = {self.x}")
-#+END_SRC
+#+end_src
 
 Note that in a typical setup you *cannot* use the standard
 dot notation to set the value of an InputPort
@@ -160,10 +160,10 @@ used. But the user must note that the value of the
 associated Node is being overwritten. This method must be
 used sparingly.
 
-#+BEGIN_SRC python
+#+begin_src python
 sink['x'].value = 1
 Block.execute(sink)
-#+END_SRC
+#+end_src
 
 **** ProxyPort
 
@@ -177,7 +177,7 @@ properties of an [[InputPort]] but it is not considered in the
 block execution scheduling mechanism. (See
 [[file:../tutorials/block/subsystem.py][tutorials/block/subsystem.py]])
 
-#+BEGIN_SRC python
+#+begin_src python
 class Generator(Block):
   block_name = 'Generator'
 
@@ -207,7 +207,7 @@ class Container(Block):
     self.printer = Printer()
     self.generator['y'] >> self.printer['x']
     self.generator['y'] >> self['y']
-#+END_SRC
+#+end_src
 
 * Block Pipeline
 

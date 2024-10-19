@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import List
 import cv2
-from system.block import Block
+from syedra.core.block import Block, InputPort
 
 
 __all__ = [

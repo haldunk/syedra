@@ -1,0 +1,8 @@
+#+title: syedra-vision Sub Package
+#+author: Haldun Komsuoglu
+
+
+Vision procession implementation components.
+
+  - [[file:docs/index.org][Documentation]]
+  - [[file:tutorials/index.org][Tutorials]]

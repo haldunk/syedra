@@ -1,0 +1,8 @@
+#+title: syedra-control Sub Package
+#+author: Haldun Komsuoglu
+
+
+Control system implementation components.
+
+  - [[file:docs/index.org][Documentation]]
+  - [[file:tutorials/index.org][Tutorials]]

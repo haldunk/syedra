@@ -1,6 +1,6 @@
 from typing import List
 import cv2
-from system.block import Block, InputPort, OutputPort
+from syedra.core.block import Block, InputPort, OutputPort
 
 
 __all__ = [

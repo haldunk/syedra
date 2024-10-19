@@ -1,15 +1,16 @@
 #+TITLE: syedra Vision Processing Components
 #+AUTHOR: Haldun Komsuoglu
 
+
 This sub-package contains various modules for acquisition,
 processing and presentation of visual data. It also
 provides user interfacing mechanisms.
 
 The package is built on [[https://opencv.org][OpenCV]].
 
-- [[file:../syedra/vision/camera.py][camera]] : vision data acquisition using camera sensors
-- [[file:../syedra/vision/display.py][display]] : display tools for visual data 
-- [[file:../syedra/vision/keyboard.py][keyboard]] : user interface tools for keyboard
-- [[file:../syedra/vision/transform.py][transform]] : visual data transformation blocks
-- [[file:../syedra/vision/detect.py][detect]] : tools to execute  detection in visual data
+  - [[file:../syedra/vision/camera.py][camera]] : vision data acquisition using camera sensors
+  - [[file:../syedra/vision/display.py][display]] : display tools for visual data 
+  - [[file:../syedra/vision/keyboard.py][keyboard]] : user interface tools for keyboard
+  - [[file:../syedra/vision/transform.py][transform]] : visual data transformation blocks
+  - [[file:../syedra/vision/detect.py][detect]] : tools to execute  detection in visual data
 

@@ -1,5 +1,5 @@
-#+TITLE: Tutorials on syedra Package
-#+AUTHOR: Haldun Komsuoglu
+#+title: Tutorials on syedra-core Package
+#+author: Haldun Komsuoglu
 
 
 Tutorials folder contains a collection of scripts demonstrating the
@@ -9,22 +9,23 @@ The scripts should be executed from the top project folder and from
 within the development virtual environment and/or a setup where the
 syedra package is installed.
 
-#+BEGIN_SRC sh
+#+begin_src sh
 source venv/bin/activate
-#+END_SRC
+#+end_src
 
 For instance, the ``tutorial/block/wrapper.py`` example can be executed
 as follows:
 
-#+BEGIN_SRC sh
+#+begin_src sh
 python -m tutorials.block.wrapper
-#+END_SRC
+#+end_src
 
 * Block
-- [[file:block/wrapper.py][wrapper.py]] : basic Block definition as a process wrapper
-- [[file:block/source.py][source.py]] : Block definition with output port
-- [[file:block/sink.py][sink.py]] : Block definition with input port
-- [[file:block/function.py][function.py]] : Block implementing a function between an input and an output
-- [[file:block/periodic.py][periodic.py]] : Block pipeline with feedback producing self excitement
-- [[file:block/subsystem.py][subsystem.py]] : Block containing a sub-system of blocks
+
+  - [[file:block/wrapper.py][wrapper.py]] : basic Block definition as a process wrapper
+  - [[file:block/source.py][source.py]] : Block definition with output port
+  - [[file:block/sink.py][sink.py]] : Block definition with input port
+  - [[file:block/function.py][function.py]] : Block implementing a function between an input and an output
+  - [[file:block/periodic.py][periodic.py]] : Block pipeline with feedback producing self excitement
+  - [[file:block/subsystem.py][subsystem.py]] : Block containing a sub-system of blocks
   

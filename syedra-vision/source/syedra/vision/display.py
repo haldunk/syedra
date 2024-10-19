@@ -1,12 +1,12 @@
 from typing import Tuple
 import cv2
-from system.block import Block, InputPort, OutputPort
+from syedra.core.block import Block, InputPort, OutputPort
 
 
 __all__ = [
   'Display',
   'Sketch',
-  'BlockSketch',
+  'BlobSketch',
 ]
 
 
