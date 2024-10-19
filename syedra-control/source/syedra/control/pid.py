@@ -1,4 +1,4 @@
-from syedra.system.block import Block, InputPort, OutputPort
+from syedra.core.block import Block, InputPort, OutputPort
 from time import time
 
 
