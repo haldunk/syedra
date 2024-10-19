@@ -7,7 +7,7 @@ where = ["source/"]
 include = ["syedra.control"]
 
 [project]
-name = "syedra-vision"
+name = "syedra-control"
 version = "0.0.0"
 description = "Syedra architecture based controls components"
 keywords = ['vision', 'processing pipeline']
