@@ -2,13 +2,15 @@
 .PHONY : help
 
 help :
-	@echo "make [target]"
+	@echo "Syedra Python Core Library"
 	@echo
-	@echo "Folder management:"
-	@echo "  clean           - deletes temporary files"
-	@echo "Packaging management:"
-	@echo "  clear           - clears any built package"
-	@echo "  build           - builds python package"
+	@echo " Folder management:"
+	@echo "   clean   - deletes temporary files"
+	@echo
+	@echo " Packaging management:"
+	@echo "   clear   - clears any built package"
+	@echo "   build   - builds python package"
+	@echo "   install - install compiled package locally"
 
 
 # Folder management targets
@@ -20,7 +22,7 @@ clean :
 	@printf "done.\n"
 
 # Packaging management targets
-.PHONY : clear build
+.PHONY : clear build install
 
 clear :
 	@echo "All compiled package files deleted"
@@ -33,3 +35,8 @@ build : clear
 	else \
 		echo "### activate the virtual environment first ###"; \
 	fi
+
+install :
+	@echo "Installing syedra-core package locally"
+	@pip uninstall --break-system-packages syedra_core
+	@pip install -U --break-system-packages dist/*.whl

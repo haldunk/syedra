@@ -1,37 +1,74 @@
+SHELL := /bin/bash
+
 # Make management targets
 .PHONY : help
 
 help :
-	@echo "make [target]"
+	@echo "Syedra Python Library"
+	@echo "  help   - displays available make targets"
 	@echo
-	@echo "Folder management:"
-	@echo "  clean           - deletes temporary files"
-	@echo "Virtual environment management:"
-	@echo "  venv            - sets up the virtual environment"
-	@echo "Packaging management:"
-	@echo "  clear           - clears any built package"
-	@echo "  build           - builds python package"
+	@echo " Virtual Environment Management"
+	@echo "  venv-clear   - delete virtual environment"
+	@echo "  venv-setup   - sets up a fresh virtual environment"
+	@echo "  venv-install - installs/updates required packages"
+	@echo "  venv-pack    - updates required packages listing"
+	@echo
+	@echo " Development Management"
+	@echo "  clean  - delete all temporary files"
+	@echo "  test   - runs unit tests"
+	@echo
+	@echo " Package Management"
+	@echo "  clear   - delete compiled package"
+	@echo "  build   - build compiled package"
+	@echo "  install - install compiled package locally"
 
 
-# Folder management targets
-.PHONY : clean
+# Virtual environment management targets
+.PHONY : venv-clear venv-setup venv-install venv-pack
+
+venv-clear :
+	@echo "Delete existing virtual environment"
+	@rm -rf venv
+
+venv-setup : venv-clear
+	@echo "Setup a fresh virtual environment"
+	@python -m venv venv
+	@source venv/bin/activate && make venv-install
+
+venv-install :
+	@echo "Install/update required python packages"
+	@touch requirements.txt
+ifdef VIRTUAL_ENV
+	@pip install -r requirements.txt
+else
+	@echo -e "\e[31mNot in virtual environment"
+endif
+
+venv-pack :
+	@echo "Update virtual environment requirements"
+ifdef VIRTUAL_ENV
+	@pip freeze > requirements.txt
+else
+	@echo -e "\e[31mNot in virtual environment"
+endif
+
+# Development management targets
+.PHONY : clean test
 
 clean :
-	@printf "Deleting all temporary files..."
-	@find . -name "*~" -delete
-	@printf "done.\n"
+	@echo "Deleting all temporary files"
+	@find ./ -name "*~" -type f -delete
+	@find ./syedra-core -name "__pycache__" -exec rm -r "{}" \;
+	@find ./syedra-control -name "__pycache__" -exec rm -r "{}" \;
+	@find ./syedra-vision -name "__pycache__" -exec rm -r "{}" \;
 
+test :
+	@echo "Running unit tests"
+	@python test.py
 
-# Virtual environment targets
-.PHONY : venv
-
-venv :
-	@echo "Setup virtual environment"
-	@python -m virtualenv venv
-	@source venv/bin/activate && pip install -r requirements.txt
 
 # Packaging management targets
-.PHONY : clear build
+.PHONY : clear build install
 
 clear :
 	@echo "Delete any compiled package"
@@ -39,8 +76,14 @@ clear :
 	@make clear -C syedra-vision
 	@make clear -C syedra-control
 
-build : clear
+build : 
 	@echo "Build python package"
-	@make build -C syedra-core
-	@make build -C syedra-vision
-	@make build -C syedra-control
+	@source venv/bin/activate && make build -C syedra-core
+	@source venv/bin/activate && make build -C syedra-vision
+	@source venv/bin/activate && make build -C syedra-control
+
+install : 
+	@echo "Installing package locally"
+	@make install -C syedra-core
+	@make install -C syedra-vision
+	@make install -C syedra-control

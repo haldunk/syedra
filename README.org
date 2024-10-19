@@ -1,4 +1,4 @@
-#+TITLE: syedra: A Systems Design Framework
+#+TITLE: syedra: A System Design Framework
 #+AUTHOR: Haldun Komsuoglu
 
 *syedra* framework is a tool kit to implement control and
@@ -10,7 +10,6 @@ heirachy of abstraction layers.
 See [[Documentation][Documentation]] for more details on the code use.
 
 See [[file:release.org][Releases]] for a full list of tagged stable versions.
-
 
 * Branches
 
@@ -26,9 +25,25 @@ minimal dependency in downstream projects. Each sub-package
 corresponds to a distinct (but inter-dependent) python
 package. Created packages are:
 
-- syedra-core
-- syedra-vision
-- syedra-control
+  - syedra-core
+  - syedra-vision
+  - syedra-control
+
+** From Source
+
+The python packages can be install locally from
+source. After cloning the repository build the package and
+simply run the install make target.
+
+#+begin_src sh
+git clone https://github.com/haldunk/syedra.git
+cd syedra
+make venv-setup
+make build
+make install
+#+end_src
+  
+** From PyPI
 
 These packages can be installed from pypi by running the
 following command:
@@ -36,6 +51,8 @@ following command:
 #+begin_src sh
 pip install syedra-core [syedra-vision syedra-control]
 #+end_src
+
+** From GitHub
 
 Alternatively, you can install directly from the github repository
 using the following command:
