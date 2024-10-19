@@ -58,4 +58,11 @@ xeyes
 * Display
 * Keyboard
 * Transform
+
+  - [[file:transform/crop.py][crop.py]] : captures a frame from camera and crops the image
+  - [[file:transform/convert.py][convert.py]] : captures a frame and converts the color model to HSV
+    
 * Detect
+
+  - [[file:tutorials/detect/mask.py][mask.py]] : captures a frame and produces a HSV hue mask
+  - [[file:detect/blob.py][blob.py]] : captures a frame and identifies the largest blob based on color

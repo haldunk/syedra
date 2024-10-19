@@ -1,5 +1,6 @@
 from typing import List
 import cv2
+import numpy as np
 from syedra.core.block import Block, InputPort, OutputPort
 
 
