@@ -1,4 +1,4 @@
-#+TITLE: Syedra: A Systems Design Framework
+#+TITLE: syedra: A Systems Design Framework
 #+AUTHOR: Haldun Komsuoglu
 
 *syedra* framework is a tool kit to implement control and
@@ -9,6 +9,16 @@ heirachy of abstraction layers.
 
 See [[Documentation][Documentation]] for more details on the code use.
 
+See [[file:release.org][Releases]] for a full list of tagged stable versions.
+
+
+* Branches
+
+  - *main*: most recent stable version. See [[file:release.org][Releases]] for a
+    list of certain milestones of this branch.
+  - *devel*: potantially unstable active development branch
+    for ongoing code merges
+    
 * Installation
 
 This project is partitioned into sub-packages to facilitate
@@ -23,27 +33,27 @@ package. Created packages are:
 These packages can be installed from pypi by running the
 following command:
 
-#+BEGIN_SRC sh
+#+begin_src sh
 pip install syedra-core [syedra-vision syedra-control]
-#+END_SRC
+#+end_src
 
 Alternatively, you can install directly from the github repository
 using the following command:
 
-#+BEGIN_SRC sh
+#+begin_src sh
 pip install git+https://github.com/haldunk/syedra.git#subdirectory=syedra-core
 pip install git+https://github.com/haldunk/syedra.git#subdirectory=syedra-vision
 pip install git+https://github.com/haldunk/syedra.git#subdirectory=syedra-control
-#+END_SRC
+#+end_src
 
 To install a specific tagged version or a branch use the following
 syntax:
 
-#+BEGIN_SRC sh
+#+begin_src sh
 pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-core
 pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-vision
 pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-control
-#+END_SRC
+#+end_src
 
 * Quick Start
 
@@ -56,7 +66,7 @@ standardized informational input/output interface. A
 typical Block class exposes input and output ports and an
 update method that defines the operation to be executed.
 
-#+BEGIN_SRC python
+#+begin_src python
 from syedra.core.block import *
 
 class Incrementor(Block):
@@ -67,7 +77,7 @@ class Incrementor(Block):
 
   def update(self):
     self.y = self.x + 1
-#+END_SRC
+#+end_src
 
 While a Block instance cen be used stand-alone it does not
 offer much value in that way. Block architecture's real
@@ -75,7 +85,7 @@ advantage emerges from the construction of [[file:docs/block.org::Block Pipeline
 pipelines]] by combining multiple block instances in a
 network.
 
-#+BEGIN_SRC python
+#+begin_src python
 import random
 
 class Generator(Block):
@@ -99,7 +109,7 @@ generator = Generator()
 printer = Printer()
 
 generator['y'] >> printer['x']
-#+END_SRC
+#+end_src
 
 [[file:docs/block.py::Execution of Blocks][Execution of a block pipeline]] is initiated by selecting one
 or more initial blocks to start the execution. An internal
@@ -107,9 +117,9 @@ token passing mechanism executes the update methods of
 blocks in accordance with the [[file:docs/block.py::Block Readiness][readiness]] of each block in
 the pipeline.
 
-#+BEGIN_SRC python
+#+begin_src python
 Block.execute(generator)
-#+END_SRC
+#+end_src
 
 The pipeline execution is performed in cycles. In each
 cycle all *ready* blocks are executed. At the end of the
@@ -127,7 +137,7 @@ one can also imagine building a pipeline with feedback
 connection that cindefinitely self triggers itself and
 produces a periodic execution sequence.
 
-#+BEGIN_SRC python
+#+begin_src python
 class TriggeredGenerator(Block):
   block_name = 'Triggered Generator'
 
@@ -144,30 +154,30 @@ generator['y'] >> printer['x']
 generator['y'] >> generator['trigger']
 
 Block.execute(generator)
-#+END_SRC
+#+end_src
 
 For a detailed documentation see [[file:docs/index.org][docs folder]]. For
 illustrative examples of various ways to use the
 architecture see [[file:tutorials/index.org][tutorials folder]].
 
-* Running Examples
+* Examples
 
 To run the tutorial scripts in this repository you need to
 enter into the virtual environment and setup the python
 path.
 
-#+BEGIN_SRC sh
+#+begin_src sh
 source venv/bin/activate
 source path.sh
-#+END_SRC
+#+end_src
 
 Then, any tutorial in the sub-package folders can be
 executed.
 
-#+BEGIN_SRC sh
+#+begin_src sh
 cd syedra-core
 python -m tutorial.block.process
-#+END_SRC
+#+end_src
 
 * Documentation
 
@@ -214,16 +224,16 @@ tailored virtual environment. For convenience the following
 make target is provided in each sub-package to setup the
 required virtual environment.
 
-#+BEGIN_SRC
+#+begin_src
 make venv
-#+END_SRC
+#+end_src
 
 To switch to the virtual environment simply source the
 activate script.
 
-#+BEGIN_SRC
+#+begin_src
 source venv/bin/activate
-#+END_SRC
+#+end_src
 
 ** Running Tutorial Scripts
 
@@ -236,24 +246,7 @@ entering into the virtual environment sourcing this file
 will setup python so that all sub-packages can be accessed
 by tutorial scripts.
 
-#+BEGIN_SRC
+#+begin_src
 source path.sh
-#+END_SRC
+#+end_src
 
-* Branches
-** main
-This branch is where the stable implementation of the
-repository is maintained.
-
-** experimental
-This branch, extended from the [[#main][main]] branch, is where new
-concepts are tested.
-
-* Tags
-
-A three digit versioning system is employed:
-- MAJOR: incremented when backward compatibility is lost
-- MINOR: incremeneted when database schema is changed
-- BUILD: incremented when all other changes made
-  
-** 0.0.0
