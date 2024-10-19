@@ -67,9 +67,9 @@ To install a specific tagged version or a branch use the following
 syntax:
 
 #+begin_src sh
-pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-core
-pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-vision
-pip install git+https://github.com/haldunk/syedra@<tag|branch>#subdirectory=syedra-control
+pip install git+https://github.com/haldunk/syedra.git@<tag|branch>#subdirectory=syedra-core
+pip install git+https://github.com/haldunk/syedra.git@<tag|branch>#subdirectory=syedra-vision
+pip install git+https://github.com/haldunk/syedra.git@<tag|branch>#subdirectory=syedra-control
 #+end_src
 
 * Quick Start
