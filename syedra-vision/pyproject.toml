@@ -14,7 +14,7 @@ keywords = ['vision', 'processing pipeline']
 requires-python = ">=3.10"
 dependencies = [
   "syedra-core",
-  "cv2",
+  "opencv-python",
 ]
 
 [project.urls]
