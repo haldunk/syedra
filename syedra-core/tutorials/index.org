@@ -29,3 +29,8 @@ python -m tutorials.block.wrapper
   - [[file:block/periodic.py][periodic.py]] : Block pipeline with feedback producing self excitement
   - [[file:block/subsystem.py][subsystem.py]] : Block containing a sub-system of blocks
   
+* FSM
+
+  - [[file:fsm/state.py][state.py]] : three State specification pattern examples
+  - [[file:fsm/event.py][event.py]] : three Event specification pattern examples
+  - [[file:fsm/counter.py][counter.py]] : simple bi-stable counter

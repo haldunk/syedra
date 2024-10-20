@@ -1,2 +1,299 @@
-#+TITLE: syedra Finite State Machine Primitive Documentation
-#+AUTHOR: Haldun Komsuoglu
+#+title: syedra Finite State Machine Primitive Documentation
+#+author: Haldun Komsuoglu
+
+
+*FSM* provides primitives to create finite-state machines:
+a graph of [[file:~/Projects/trolley/control/experimental/syedra/syedra-core/source/syedra/core/fsm.py::class State][State]] nodes connected by directed edges; and the
+[[file:~/Projects/trolley/control/experimental/syedra/syedra-core/source/syedra/core/fsm.py::class Event][Events]] edges. The execution logic is implemented by the [[file:~/Projects/trolley/control/experimental/syedra/syedra-core/source/syedra/core/fsm.py::class
+ Machine][Machine]]
+container class.
+
+* Importing
+
+The primitive [[file:~/Projects/trolley/control/experimental/syedra/syedra-core/source/syedra/core/fsm.py::class Machine(][Machine]] class can be imported as follows. 
+
+#+begin_src python
+from syedra.core.fsm import Machine
+#+end_src
+
+Generally, one would require the [[file:../source/syedra/core/fsm.py::class State][State]] and [[file:~/Projects/trolley/control/experimental/syedra/syedra-core/source/syedra/core/fsm.py::class Event][Event]] in
+implementation of a custom FSM class.
+
+#+begin_src python
+from syedra.core.block import State, Event
+#+end_src
+
+Alternatively, all typically needed classes can be imported
+using the public names.
+
+#+begin_src python
+from syedra.core.fsm import *
+#+end_src
+
+* Machine Definition
+
+** States
+
+States represent the discrete states of the finite state
+machine and capture a continuous time process. A State is
+defined by three methods:
+
+  - *ingress* : executed once when machine enters into the state
+  - *during* : executed at every machine update while in the state
+  - *egress* : executed once when machine exits from the state
+
+All three state methods take one non-optional argument of
+type Machine which is the Machine instance that the State
+instance is associated with. This allows the State logic to
+be able to access the properties of the parent Machine if
+need be.
+
+All three methods are optional. Technically a State can be
+defined with no ingress, during or egress functions or a
+any combination there of.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  a = State()
+  b = State(ingress=arrive)
+  c = State(during=process)
+  d = State(egress=leave)
+  e = State(ingress=arrive, egress=leave)
+  f = State(during=process, egress=leave)
+  g = State(ingress=arrive, during=process)
+#+end_src
+
+There are two ways to specify the State methods: global
+functions; or instance methods of a Machine.
+
+Using a global function as a State method is
+straighforward. The global function must take a single
+argument of type Machine and return no value.
+
+#+begin_src python
+def global_function(machine:Machine):
+  print(machine.name)
+
+class MyMachine(Machine):
+  
+  a = State(ingress=global_function)
+#+end_src
+
+The use of an instance method is similar but the definition
+of the instance method already take a Machine instance as
+its first argument so there is no need to explicitly add an
+argument for the Machine instance as in the global function
+case. Note that the instance method must be defined _ahead_
+of the State property in the Machine class definition.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  def instance_method(self):
+    print(self.name)
+
+  a = State(ingress=instance_method)
+#+end_src
+
+State instances are typically _memoriless_ and rather use
+the internal properties of the parent Machine
+instance. However, the design does not prohibit the use of
+State memory and there may be edge cases where that might
+be useful.
+
+Defining State properties in a Machine class can be done
+directly using the State class. This coding pattern serves
+situations where the State occurances across the program
+are varied and not repeated.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  a = State(ingress=enter, during=process, egress=leave)
+#+end_src
+
+However, if a particular State construct is repeated in
+numerous places one can define State subclass instead.
+
+#+begin_src python
+class MyState(State):
+
+  @staticmethod
+  def enter(machine):
+    print(machine.name)
+
+  def __init__(self):
+    super().__init__(self, ingress=MyState.enter)
+
+
+class MyMachine(Machine):
+
+  a = MyState()
+#+end_src
+
+** Events
+
+Events are conditional guards in a finite state machine
+that control the transitions between states. An Event is
+defined by a single *check* method which evaluates the
+logical decision whether to execute a transition.
+
+While the design permits the definition of an Event without
+a check function specification such an Event will always
+return False and would never produce a transition. This may
+be useful in some very particular situations but not a
+common use of Event class.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  always_false = Event()
+#+end_src
+
+The check function returns a boolean result if True
+indicates a transition is triggered, otherwise means no
+transition will occur.
+
+As was the case with the [[States][State]] coding patterns there are
+two ways to specify Events: global functions; or instance
+methods of a Machine.
+
+Using a global function as an Event method is
+straighforward. The global function must take a single
+argument of type Machine and return a boolean value.
+
+#+begin_src python
+def global_function(machine:Machine):
+  print(machine.name)
+  return True
+
+class MyMachine(Machine):
+  
+  a = Event(check=global_function)
+#+end_src
+
+The use of an instance method is similar but the definition
+of the instance method already take a Machine instance as
+its first argument so there is no need to explicitly add an
+argument for the Machine instance as in the global function
+case. Note that the instance method must be defined _ahead_
+of the Event property in the Machine class definition.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  def instance_method(self):
+    print(self.name)
+    return True
+
+  a = Event(check=instance_method)
+#+end_src
+
+Event instances are typically _memoriless_ and rather use
+the internal properties of the parent Machine instance to
+compute the transition occurance. However, the design does
+not prohibit the use of Event memory and there may be edge
+cases where that might be useful.
+
+Defining Event properties in a Machine class can be done
+directly using the Event class. This coding pattern serves
+situations where the Event occurances across the program
+are varied and not repeated.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  a = Event(check=evaluate)
+#+end_src
+
+However, if a particular Event construct is repeated in
+numerous places one can define Event subclass instead.
+
+#+begin_src python
+class MyEvent(State):
+
+  @staticmethod
+  def evaluate(machine):
+    print(machine.name)
+    return True
+
+  def __init__(self):
+    super().__init__(self, check=MyEvent.evaluate)
+
+
+class MyMachine(Machine):
+
+  a = MyEvent()
+#+end_src
+
+** Transition Table
+
+State machine behavior is characterized by the *Transition
+Table* of the Machine which is a collection of event
+guarded state change rules and the initial state.
+
+A transition rule is a 3-tuple consisting of:
+
+  - source state
+  - guard event
+  - sink state
+
+It defines the state change behavior from source to sink
+states if the guard event occurs while the machine is in
+source state.
+
+In the Machine class transition table is a list of 3-tuple
+of state and event names set to the property
+*transitions*. State and event names are the names of the
+associated class properties.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  state_a = State()
+  state_b = State()
+  state_c = State()
+
+  event_1 = Event()
+  event_2 = Event()
+
+  transitions = [
+    ('state_a', 'event_1', 'state_b'),
+    ('state_a', 'event_2', 'state_c'),
+  ]
+  initial = 'state_a'
+#+end_src
+
+The initial state *must be* specified. It is set to the
+*initial* property and is the name of the associated state.
+
+In machine operation those entries of the transition table
+where the current state is the source state are checked _in
+the order they are specified in the table_. The _first_
+event that return True triggers its associated transition.
+
+** Machine
+
+A Machine is a collection of State and Event properties. A
+transition table defines the state machine logic. The
+machine state is updated by calling the *update()* method.
+
+A typical definition of a finite state machine class
+consists of three parts:
+
+  - [[States]]: a set of properties of type [[file:~/Projects/trolley/control/experimental/syedra/syedra-core/source/syedra/core/fsm.py::class State][State]] 
+  - [[Events]]: a set of properties of type [[file:~/Projects/trolley/control/experimental/syedra/syedra-core/source/syedra/core/fsm.py::class Event][Event]] 
+  - [[Transition Table]]: a list event guarded state change
+    rules and the initial state
+
+To update the state of a Machine instance the *update()*
+method is called. At every call:
+
+  - the machine evaluates the transition table and
+    determines if there is going to be a state change.
+  - if there a transition is triggered:
+    - egress method of the current state is executed
+    - ingress method of the target state is executed
+    - the current state is set to the target state
+  - finally, the during state of the current state is executed

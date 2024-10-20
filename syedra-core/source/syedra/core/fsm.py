@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Callable
+from typing import Callable, List, Tuple
 
 
 __all__ = [
@@ -12,9 +12,9 @@ __all__ = [
 class State:
 
   def __init__(self,
-               ingress:Callable[Machine]=None,
-               during:Callable[Machine]=None,
-               egress:Callable[Machine]=None):
+               ingress:Callable[[Machine], None]=None,
+               during:Callable[[Machine], None]=None,
+               egress:Callable[[Machine], None]=None):
     self._name = None
     self._machine = None
     self.__ingress = ingress
@@ -39,7 +39,7 @@ class State:
 
 class Event:
 
-  def __init__(self, check:Callable[Machine]=None):
+  def __init__(self, check:Callable[[Machine], bool]=None):
     self._name = None
     self._machine = None
     self.__check = check
@@ -77,18 +77,26 @@ class MachineMeta(type):
 
 class Machine(metaclass=MachineMeta):
 
-  machine_name = None
-  transitions = []
-  
+  machine_name:str = None
+  transitions:List[Tuple[str, str, str]] = []
+  initial:str = None
+
+  class ImproperConfiguration(Exception):
+
+    def __init__(self, message):
+      super().__init__(f"Improper configuration: {message}")
+
+      
   def __init__(self, name:str=None):
     self.__name = name or self.machine_name
-    assert self.__name, \
-      'A non emptry string name must be assigned'
+    if self.__name is None:
+      raise Machine.ImproperConfiguration(
+        "A non empty string name must be assigned")
     for state in self._states.values():
       state._machine = self
     for event in self._events.values():
       event._machine = self
-    self.setup()
+    self._setup()
       
   @property
   def name(self) -> str:
@@ -97,7 +105,17 @@ class Machine(metaclass=MachineMeta):
   def __str__(self):
     return self.name
 
-  def setup(self):
+  def get_initial(self):
+    if self.initial in self._states:
+      return self.initial
+    elif self.initial is None:
+      raise Machine.ImproperConfiguration(
+        "initial property and/or get_initial() must be specified")
+    else:
+      raise Machine.ImproperConfiguration(
+        f"Specified initial state ({self.initial}) is not a machine state")
+      
+  def _setup(self):
     self.__transitions = dict()
     for transition in self.transitions:
       source = self._states[transition[0]]
@@ -107,7 +125,7 @@ class Machine(metaclass=MachineMeta):
         self.__transitions[source][event] = target
       else:
         self.__transitions[source] = {event: target}
-    self.__initial = self._states[self.initial]
+    self.__initial = self._states[self.get_initial()]
     self.__current = None
       
   def print(self):

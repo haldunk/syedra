@@ -185,9 +185,9 @@ dependencies and to reduce code base.  More detailed
 information on each subpackage can be found in the
 associated documentation file linked below.
 
-- [[file:syedra-core/index.org][core]]    : fundamental building blocks of the framework
-- [[file:syedra-vision/index.org][vision]]  : vision procession implementation components
-- [[file:syedra-control/index.org][control]] : control system implementation components
+  - [[file:syedra-core/index.org][core]]    : fundamental building blocks of the framework
+  - [[file:syedra-vision/index.org][vision]]  : vision procession implementation components
+  - [[file:syedra-control/index.org][control]] : control system implementation components
   
 * Tutorials
 
