@@ -75,6 +75,45 @@ process.y = 1
 print(f"y = {process.y}")
 #+end_src
 
+**** Value Assignment
+
+Only *output* type port values can be assigned. Attempting
+to assign the value of an input port will raise immutable
+port value error. This constraint is global in that both
+within the owner block object instance and externally port
+value assignment obeys this constraint.
+
+If a system design needs a certain input port to be
+manupulated by an external source _manually_ this can be
+achived by creating an intermediate block with appropriate
+output ports that are bound to the input ports to be
+assigned. Assigning values to this intermediate block and
+starting the block execution from this intermediate block
+will propapage the value to the target block input port.
+
+#+begin_src python
+
+class Dial(Block):
+  block_name = 'Dial'
+  value = OutputPort(initial=0.0)
+
+class Target(Block):
+  block_name = 'Target'
+  value = InputPort(initial=0.0)
+
+  def update(self):
+    print(self.value)
+
+dial = Dial()
+target = Target()
+
+dial['value'] >> target['value']
+
+dial.value = 1.0
+Block.execute(dial)
+#+end_src
+
+
 **** Port Binding
 
 Binding two ports is achived using the item getter function
@@ -210,7 +249,6 @@ class Container(Block):
 #+end_src
 
 * Block Pipeline
-
 **** Connectivity
 
 By definition, each block port instance is associated with
