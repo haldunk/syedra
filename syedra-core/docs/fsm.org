@@ -31,7 +31,6 @@ from syedra.core.fsm import *
 #+end_src
 
 * Machine Definition
-
 ** States
 
 States represent the discrete states of the finite state
@@ -297,3 +296,50 @@ method is called. At every call:
     - ingress method of the target state is executed
     - the current state is set to the target state
   - finally, the during state of the current state is executed
+
+* Block Machines
+
+State machines can be wrapped by a Block to turn them into
+a pipline block, which is referred as /Block Machine/ in
+this context.
+
+Due to metclass conflict a Block Machine cannot be
+implemented by multiple inheretence method. Instead a Block
+class must wrap the state machine and call the state
+machine update method in the block update method.
+
+The internal workings of the state machine can access the
+ports of the wrapping block. To accomplish this the state
+machine class must have a reference to the encompasing
+block instance which can be passed at the instansiation.
+
+#+begin_src python
+class MyMachine(Machine):
+
+  def during(self):
+    self.block.out = self.block.inp + 1
+    print(f'{self.block.inp} -> {self.block.out}')
+  
+  event = Event(check=lambda m: m.block.inp > 5.0)
+  state = State(during=during)
+
+  transitions = [
+    ('state', 'event', 'state'),
+  ]
+                
+  initial = 'state'
+
+
+class BlockMachine(Block):
+  block_name = 'Block Machine'
+
+  inp = InputPort(initial=0.0)
+  out = OutputPort(initial=0.0)
+
+  def __init__(self):
+    super().__init__()
+    self.machine = MyMachine(block=self)
+
+  def update(self):
+    self.machine.update()
+#+end_src

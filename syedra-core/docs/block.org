@@ -113,7 +113,6 @@ dial.value = 1.0
 Block.execute(dial)
 #+end_src
 
-
 **** Port Binding
 
 Binding two ports is achived using the item getter function
@@ -249,7 +248,7 @@ class Container(Block):
 #+end_src
 
 * Block Pipeline
-**** Connectivity
+** Connectivity
 
 By definition, each block port instance is associated with
 a [[file:../syedra/core/block.py::class Node(][Node]] instance, which serves as the node of the

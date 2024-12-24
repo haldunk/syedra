@@ -29,7 +29,8 @@ python -m tutorials.block.wrapper
   - [[file:block/manual.py][manual.py]] : Manual manipulation of input ports
   - [[file:block/periodic.py][periodic.py]] : Block pipeline with feedback producing self excitement
   - [[file:block/subsystem.py][subsystem.py]] : Block containing a sub-system of blocks
-  
+  - [[file:block/statemachine.py][statemachine.py]] : Block containing a [[file:../docs/fsm.org][FSM]]
+    
 * FSM
 
   - [[file:fsm/state.py][state.py]] : three State specification pattern examples

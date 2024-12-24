@@ -29,7 +29,6 @@ class Counter(Machine):
   initial = 'increment'
 
 
-  
 if __name__ == '__main__':
 
   counter = Counter()
