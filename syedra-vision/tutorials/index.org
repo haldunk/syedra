@@ -1,6 +1,9 @@
 #+title: Tutorials on syedra-vision Package
 #+author: Haldun Komsuoglu
 
+* Running Scripts
+
+** Execution of Scripts
 
 Tutorials folder contains a collection of scripts demonstrating the
 use of the package. Each script is a stand alone executable.
@@ -13,12 +16,14 @@ syedra package is installed.
 source venv/bin/activate
 #+end_src
 
-For instance, the ``tutorial/block/wrapper.py`` example can be executed
-as follows:
+For instance, the ``tutorials/camera/capture.py`` example
+can be executed as follows:
 
 #+begin_src sh
 python -m tutorials.camera.capture
 #+end_src
+
+** Running on a Remote Machine
 
 If the code is being executed at a remote machine the X
 window display needs to be forwarded to the X server (most

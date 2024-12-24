@@ -205,7 +205,7 @@ executed.
 
 #+begin_src sh
 cd syedra-core
-python -m tutorials.block.process
+python -m tutorials.block.periodic
 #+end_src
 
 * Developer

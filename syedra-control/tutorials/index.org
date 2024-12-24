@@ -1,6 +1,7 @@
 #+title: Tutorials on syedra-control Package
 #+author: Haldun Komsuoglu
 
+* Running Scripts
 
 Tutorials folder contains a collection of scripts demonstrating the
 use of the package. Each script is a stand alone executable.
@@ -13,13 +14,12 @@ syedra package is installed.
 source venv/bin/activate
 #+end_src
 
-For instance, the ``tutorial/pid/track.py`` example can be executed
+For instance, the ``tutorials/pid/track.py`` example can be executed
 as follows:
 
 #+begin_src sh
 python -m tutorials.pid.track
 #+end_src
-
 
 * PID
 
