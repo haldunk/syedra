@@ -2,7 +2,6 @@
 #+author: Haldun Komsuoglu
 
 * Running Scripts
-
 ** Execution of Scripts
 
 Tutorials folder contains a collection of scripts demonstrating the
