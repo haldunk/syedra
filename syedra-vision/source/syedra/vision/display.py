@@ -69,8 +69,10 @@ class BlobSketch(Sketch):
     else:
       self.put_marks()
 
+  def get_center(self):
+    return [int(self.blob['cx']), int(self.blob['cy'])]
+      
   def put_marks(self):
-    center = [int(self.blob['cx']), int(self.blob['cy'])]
     cv2.circle(
-      self.annotated, center,
+      self.annotated, self.get_center(),
       self.__radius, self.__color, self.__thickness)
