@@ -30,6 +30,11 @@ python -m tutorials.block.wrapper
   - [[file:block/periodic.py][periodic.py]] : Block pipeline with feedback producing self excitement
   - [[file:block/subsystem.py][subsystem.py]] : Block containing a sub-system of blocks
   - [[file:block/statemachine.py][statemachine.py]] : Block containing a [[file:../docs/fsm.org][FSM]]
+
+* AsyncBlock
+
+  - [[file:ablock/manual.py][manual.py]] : Manual manipulation of input ports in an async block
+  - [[file:ablock/pipeline.py][pipeline.py]] : Demonstration of pipeline execution alongside coroutines
     
 * FSM
 

@@ -308,3 +308,53 @@ instance is marked as *ready to execute* and executed in the next
 execution cycle. When there is no Block instance ready for execution
 the execution concludes.
   
+
+* Asynchronous Blocks
+
+Syedra core also provides an asynchronous version of the
+Block architecture that is compatible with asyncio
+framework.
+
+*NOTE:* Currently asynchronous and synchronous uses of the
+Block architecture cannot be mixed together. The user must
+select one or the other. 
+
+The utilization of this base class is mostly identical to
+that of the Block with only three main differences:
+
+  * Importing Asynchronous Block
+  * Asynchronous Block class implementation
+  * Execution of Asynchronous Block pipelines
+
+The AsyncBlock class is imported from the same module.
+  
+#+begin_src python
+from syedra.code.block import AsyncBlock
+#+end_src
+
+Derived asynchrouns block classes define the *update()*
+methods as a coroutine.
+
+#+begin_src python
+class MyBlock(AsyncBlock):
+  block_name = 'my_block'
+
+  a = InputPort(initial=0)
+  b = OutPutPort(initial=0)
+  
+  async def update(self):
+    self.b = self.a + 1
+    print(self.a, self.b)
+    await asyncio.sleep(1)
+#+end_src
+
+The execution of the asynchronous block pipeline must be
+done by calling the *AsyncBlock.execute* using *await*.
+
+#+begin_src python
+M1 = MyBlock()
+M2 = MyBlock()
+M1['b'] >> M2['a']
+
+await AsyncBlock.execute(M1)
+#+end_src

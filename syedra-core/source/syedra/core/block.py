@@ -12,6 +12,7 @@ __all__ = [
   'InputPort',
   'OutputPort',
   'ProxyPort',
+  'AsyncBlock'
 ]
 
 
@@ -395,3 +396,34 @@ class Node:
   def __ne__(self, latch:Latch):
     return self.__remove(latch=latch)
 
+
+class AsyncBlock(Block):
+
+  async def update(self):
+    '''Block async process specification'''
+    pass
+
+  @staticmethod
+  async def execute(*start:List[Block]):
+    assert start, \
+      'At least one block must be specified as start block'
+    assert all([isinstance(b, Block) for b in start]), \
+      'Input must be a list of Block instances'
+    blocks = reduce(
+      lambda a,b: a+b, [b.execution_cohord for b in start], [])
+    try:
+      while blocks:
+        Block.clear_input_latch_tokens(*blocks)
+        for block in blocks:
+          await block.update()
+        Block.set_output_latch_tokens(*blocks)
+        ready_blocks = Block.get_execution_ready_blocks()
+        blocks = reduce(
+          lambda a,b: a+b,
+          [b.execution_cohord for b in ready_blocks], [])
+    except Block.Terminated:
+      pass
+    finally:
+      Block.clear_input_latch_tokens(*Block.all())
+      
+  
