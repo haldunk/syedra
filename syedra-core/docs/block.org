@@ -308,35 +308,70 @@ instance is marked as *ready to execute* and executed in the next
 execution cycle. When there is no Block instance ready for execution
 the execution concludes.
   
-
 * Asynchronous Blocks
 
-Syedra core also provides an asynchronous version of the
-Block architecture that is compatible with asyncio
-framework.
+Syedra core Block also supportsasynchronous operations
+compatible with asyncio framework.
 
-*NOTE:* Currently asynchronous and synchronous uses of the
-Block architecture cannot be mixed together. The user must
-select one or the other. 
+*NOTE:* In a block system if there is at least one block
+with asynchronous update process the entire block system
+execution should be performed asynchronously. The block
+architecture automatically handles blocks with synchronous
+update processes as asynchronous operations.
 
-The utilization of this base class is mostly identical to
-that of the Block with only three main differences:
+There are two ways asynchronous mechanism can be created:
+  - [[#Implicit Asynchronous Specification][Implicitly]]
+  - [[#Explicit Asynchronous Specification][Explicitly]]
 
-  * Importing Asynchronous Block
-  * Asynchronous Block class implementation
-  * Execution of Asynchronous Block pipelines
+**NOTE:** This mechanism allows using blocks with
+synchronous update processes directly in asynchronous block
+systems significantly reducing the code duplication to
+support asynchronous and asynchronous architectures.
 
-The AsyncBlock class is imported from the same module.
-  
+*REMARK:* Instantiations of asynchronous block classes
+_must be executed within the asyncio loop_. This can be
+simply accomplished by doing instantiations within
+coroutines.
+
+** Implicit Asynchronous Specification
+
+In the implicit specification of an asynchronous block is
+virtually identical to that of a synchronous
+specification. The update process is rendered as a
+coroutine internally.
+
 #+begin_src python
-from syedra.code.block import AsyncBlock
+class MyBlock(Block):
+  block_name = 'my_block'
+
+  a = InputPort(initial=0)
+  b = OutPutPort(initial=0)
+  
+  def update(self):
+    self.b = self.a + 1
+    print(self.a, self.b)
+
+async def main():    
+  M1 = MyBlock()
+  M2 = MyBlock()
+  M1['b'] >> M2['a']
 #+end_src
 
-Derived asynchrouns block classes define the *update()*
-methods as a coroutine.
+** Explicit Asynchronous Specificaion
+
+This method is employed when the update process of a block
+needs special asynchronous treatment for proper
+asynchronous operation, namely, if the operation takes too
+long to process of has too much I/O operations.
+
+The majority of the block specification remains the same
+with that of the synhronous approach. The only difference
+is that instead of the the *Block.update* the
+*Block.async_update* method in the child class needs to be
+defined as a coroutine.
 
 #+begin_src python
-class MyBlock(AsyncBlock):
+class MyBlock(Block):
   block_name = 'my_block'
 
   a = InputPort(initial=0)
@@ -346,15 +381,20 @@ class MyBlock(AsyncBlock):
     self.b = self.a + 1
     print(self.a, self.b)
     await asyncio.sleep(1)
+
+async def main():    
+  M1 = MyBlock()
+  M2 = MyBlock()
+  M1['b'] >> M2['a']
 #+end_src
 
-The execution of the asynchronous block pipeline must be
-done by calling the *AsyncBlock.execute* using *await*.
+** Execution of Asynchronous Block System
+
+For an asynchronous block system we use
+*Block.async_execute* to execute the pipeline
+asynchronously.
 
 #+begin_src python
-M1 = MyBlock()
-M2 = MyBlock()
-M1['b'] >> M2['a']
-
-await AsyncBlock.execute(M1)
+await Block.async_execute(M1)
 #+end_src
+
