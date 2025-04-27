@@ -14,6 +14,7 @@ class Camera(Block):
     def __init__(self, camera:Camera):
       super().__init__(
         f"Camera Hardware Error: {camera}")
+
       
   frame = OutputPort(initial=None)
   valid = OutputPort(initial=False)
@@ -32,3 +33,4 @@ class Camera(Block):
 
   def update(self):
     self.valid, self.frame = self.__cap.read()
+    

@@ -1,4 +1,5 @@
 from __future__ import annotations
+import asyncio
 from functools import reduce
 from typing import Type, List
 from enum import Enum
@@ -12,7 +13,6 @@ __all__ = [
   'InputPort',
   'OutputPort',
   'ProxyPort',
-  'AsyncBlock'
 ]
 
 
@@ -148,6 +148,13 @@ class Block(metaclass=BlockMeta):
     self.__execution_cohord = [self]
     if superblock:
       superblock.__execution_cohord.append(self)
+    try:
+      asyncio.get_running_loop()
+      self.__loop = asyncio.get_event_loop()
+      self.__lock = asyncio.Lock()
+    except RuntimeError:
+      self.__loop = None
+      self.__lock = None
 
   @property
   def execution_cohord(self):
@@ -204,6 +211,12 @@ class Block(metaclass=BlockMeta):
     '''Block process specification'''
     pass
 
+  async def async_update(self):
+    '''Asynchronous update process coroutine'''
+    assert self.__loop, 'Block is not in an asynchronous loop'
+    async with self.__lock:
+      await self.__loop.run_in_executor(None, self.update)
+    
   @staticmethod
   def all():
     return Block.__collection
@@ -263,7 +276,30 @@ class Block(metaclass=BlockMeta):
     finally:
       Block.clear_input_latch_tokens(*Block.all())
       
-    
+  @staticmethod
+  async def async_execute(*start:List[Block]):
+    assert start, \
+      'At least one block must be specified as start block'
+    assert all([isinstance(b, Block) for b in start]), \
+      'Input must be a list of Block instances'
+    blocks = reduce(
+      lambda a,b: a+b, [b.execution_cohord for b in start], [])
+    try:
+      while blocks:
+        Block.clear_input_latch_tokens(*blocks)
+        for block in blocks:
+          await block.async_update()
+        Block.set_output_latch_tokens(*blocks)
+        ready_blocks = Block.get_execution_ready_blocks()
+        blocks = reduce(
+          lambda a,b: a+b,
+          [b.execution_cohord for b in ready_blocks], [])
+    except Block.Terminated:
+      pass
+    finally:
+      Block.clear_input_latch_tokens(*Block.all())
+
+      
 class Latch:
   '''Latch is a particular instance of a port in a block
   instance.'''
@@ -397,33 +433,3 @@ class Node:
     return self.__remove(latch=latch)
 
 
-class AsyncBlock(Block):
-
-  async def update(self):
-    '''Block async process specification'''
-    pass
-
-  @staticmethod
-  async def execute(*start:List[Block]):
-    assert start, \
-      'At least one block must be specified as start block'
-    assert all([isinstance(b, Block) for b in start]), \
-      'Input must be a list of Block instances'
-    blocks = reduce(
-      lambda a,b: a+b, [b.execution_cohord for b in start], [])
-    try:
-      while blocks:
-        Block.clear_input_latch_tokens(*blocks)
-        for block in blocks:
-          await block.update()
-        Block.set_output_latch_tokens(*blocks)
-        ready_blocks = Block.get_execution_ready_blocks()
-        blocks = reduce(
-          lambda a,b: a+b,
-          [b.execution_cohord for b in ready_blocks], [])
-    except Block.Terminated:
-      pass
-    finally:
-      Block.clear_input_latch_tokens(*Block.all())
-      
-  
