@@ -219,7 +219,6 @@ python -m tutorials.block.periodic
 - Inline comments must be kept at a minimum. Code itself
   must be legible and ideally require no inline comments.
 
-
 * Releases
 ** 0.0.0
   - First fielded version
@@ -238,3 +237,5 @@ python -m tutorials.block.periodic
       - blob detection
   - control
     - Implements scalar PID control block
+** 0.1.0
+  - Asyncronous Block feature is added
