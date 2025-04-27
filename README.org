@@ -239,3 +239,5 @@ python -m tutorials.block.periodic
     - Implements scalar PID control block
 ** 0.1.0
   - Asyncronous Block feature is added
+  - Implicit asynchronous block implementation uses lock
+    guarded executor threads
