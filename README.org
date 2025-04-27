@@ -219,3 +219,22 @@ python -m tutorials.block.periodic
 - Inline comments must be kept at a minimum. Code itself
   must be legible and ideally require no inline comments.
 
+
+* Releases
+** 0.0.0
+  - First fielded version
+  - core
+    - Implements block pipeline infrastructure
+    - Implements finite-state machine insfrastructure
+  - vision
+    - Implements OpenCV camera block
+    - Implements OpenCV image display block
+    - Implements OpenCV keyboard event handler block
+    - Implements OpenCV image transformation blocks
+      - crop
+      - color model conversion
+    - Implements OpenCV detection blocks
+      - color based masking
+      - blob detection
+  - control
+    - Implements scalar PID control block
